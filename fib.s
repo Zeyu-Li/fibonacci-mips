@@ -1,7 +1,7 @@
 .data
     prompt1: .asciiz "Enter the iternation count: "
     prompt2: .asciiz "The Fibonacci number is: "
-    newLine: .ascii  "\n"
+    newLine: .asciiz  "\n"
 
 .text
 main:
@@ -16,14 +16,30 @@ main:
 
     # store in a0
     move $a0, $v0       # input is now in a0
+    addi $a0, -1        # decrement a0
 
     # handles trivial case 1
     blez  $a0, trivialCase1  # jumps to trivial case if a0 is 0 or less
     # handles trivial case 2
     li  $t0, 1
     beq  $a0, $t0, trivialCase2  # jumps to trivial case if a0 is 1
+
+    # setup for fibonacci
+    li  $t0, 0
+    li  $t1, 1
+    addi $a0, -1        # decrement a0
+
     fib:
-        addi $a0, -1    # decrement a0
+        addi $a0, -1    # decrement a0 for each loop
+        add  $t2, $t1, $t0      # new fib is the sum of t1 and t0
+
+        # shift the numbers down
+        move $t0, $t1
+        move $t1, $t2
+        bne  $zero, $a0, fib    # recusively call fib if a0 is not 0
+
+        # breaks off
+        move $s0, $t1   # moves t1, the answer into s0 to be printed later
     
     end:
 
