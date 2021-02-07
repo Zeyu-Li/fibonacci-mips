@@ -4,5 +4,5 @@ A Fibonacci calculator in assembly (MIPS flavour)
 
 
 
-\* note max is 47
+\* note max is 47, otherwise overflows :p
 
